@@ -1,0 +1,31 @@
+- Nazwa
+    Pełnomocnik (Proxy)
+
+- Problem 
+    Wzorzec ten stosuje się w sytuacjach, gdy bezpośredni dostęp do konkretnego obiektu jest ograniczony, skomplikowany lub wymaga dodatkowej kontroli. W tym przypadku problemem jest potrzeba zabezpieczenia bazy danych przed nieautoryzowanym dostępem. Nie każdy element systemu może bezpośrednio pobierać dane bez sprawdzenia uprawnień (hasła).
+
+- Rozwiązanie
+    Rozwiązanie polega na stworzeniu obiektu pośredniczącego (Pełnomocnika), który posiada taki sam interfejs jak obiekt rzeczywisty. Pełnomocnik przyjmuje żądanie od klienta, wykonuje logikę sprawdzającą (weryfikację hasła), a następnie decyduje, czy przekazać wywołanie do prawdziwego obiektu bazy danych.
+
+    - Wytyczne implementacyjne dla zadania:
+
+        1. Interfejs Database: Zdefiniuj metodę requestData().  
+
+        2. Klasa RealDatabase: Musi implementować interfejs Database. Metoda requestData() powinna po prostu wypisywać w konsoli: „Otrzymano tajne dane”.  
+
+        3. Klasa ProxyDatabase:
+
+            * Również implementuje interfejs Database.  
+
+            * W konstruktorze przyjmuje ciąg znaków (hasło).
+
+            * W metodzie requestData() sprawdza, czy hasło jest poprawne (np. „1234”).
+
+            * Jeśli hasło jest poprawne – tworzy obiekt RealDatabase (lub korzysta z istniejącego) i wywołuje jego metodę.
+
+            * Jeśli hasło jest błędne – wypisuje: „Dostęp zabroniony”.
+
+- Konsekwencje
+    * Zalety: Zwiększenie bezpieczeństwa poprzez kontrolę dostępu (Protection Proxy) oraz oszczędność zasobów (obiekt bazy danych jest tworzony tylko wtedy, gdy hasło jest poprawne).  
+    * Wady: Wprowadzenie dodatkowej warstwy między klientem a bazą danych, co może nieznacznie zwiększyć złożoność struktury kodu.  
+
